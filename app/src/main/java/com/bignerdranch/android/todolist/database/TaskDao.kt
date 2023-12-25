@@ -1,9 +1,11 @@
-package com.bignerdranch.android.todolist
+package com.bignerdranch.android.todolist.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.bignerdranch.android.todolist.Task
 
 @Dao
 interface TaskDao {
@@ -11,7 +13,7 @@ interface TaskDao {
     fun getAllTasks(): List<Task>
 
     @Insert
-    fun insertTask(task: Task)
+    fun insert(task: Task)
 
     @Delete
     fun deleteTask(task: Task)
