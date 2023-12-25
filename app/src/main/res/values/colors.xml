@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPriorityHigh">#FF0000</color> <!-- Красный -->
+    <color name="colorPriorityMedium">#FFA500</color> <!-- Оранжевый -->
+    <color name="colorPriorityLow">#FFFF00</color>
+
 </resources>
