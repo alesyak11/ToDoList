@@ -1,12 +1,15 @@
 package com.bignerdranch.android.todolist
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.AsyncTask
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,6 +34,7 @@ class AddActivity : AppCompatActivity() {
         addButton.setOnClickListener {
             addTask()
         }
+        setRadioButtonBackgroundColor()
     }
 
     private fun addTask() {
@@ -78,4 +82,23 @@ class AddActivity : AppCompatActivity() {
 
         }
     }
+
+    private fun setRadioButtonBackgroundColor() {
+        val highRadioButton: RadioButton = findViewById(R.id.highRadioButton)
+        val mediumRadioButton: RadioButton = findViewById(R.id.mediumRadioButton)
+        val lowRadioButton: RadioButton = findViewById(R.id.lowRadioButton)
+
+        highRadioButton.buttonTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(this, R.color.colorPriorityHigh)
+        )
+
+        mediumRadioButton.buttonTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(this, R.color.colorPriorityMedium)
+        )
+
+        lowRadioButton.buttonTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(this, R.color.colorPriorityLow)
+        )
+    }
+
 }

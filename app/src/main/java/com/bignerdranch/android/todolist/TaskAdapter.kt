@@ -41,6 +41,10 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
         fun bind(task: Task) {
             descriptionTextView.text = task.description
             priorityTextView.text = task.priority.toString()
+
+            // Установка цвета фона в зависимости от приоритета
+            val backgroundColor = task.getPriorityColor(itemView.context)
+            itemView.setBackgroundColor(backgroundColor)
         }
     }
 }

@@ -73,6 +73,7 @@ class ListActivity : AppCompatActivity() {
 
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
+
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter("task_added"))

@@ -33,23 +33,27 @@
             android:layout_below="@+id/descriptionEditText"
             android:layout_margin="16dp"
             android:orientation="horizontal">
+
             <RadioButton
                 android:id="@+id/highRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="High" />
+                android:text="High"
+                android:buttonTint="@color/colorPriorityHigh"/>
 
             <RadioButton
                 android:id="@+id/mediumRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Medium" />
+                android:text="Medium"
+                android:buttonTint="@color/colorPriorityMedium"/>
 
             <RadioButton
                 android:id="@+id/lowRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Low" />
+                android:text="Low"
+                android:buttonTint="@color/colorPriorityLow"/>
         </RadioGroup>
     </LinearLayout>
 
