@@ -1,11 +1,13 @@
 package com.bignerdranch.android.todolist
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -44,6 +46,9 @@ class AddActivity : AppCompatActivity() {
             val task = Task(description = description, priority = priority)
             GlobalScope.launch(Dispatchers.IO) {
                 App.database.taskDao().insert(task)
+
+                val intent = Intent("task_added")
+                LocalBroadcastManager.getInstance(this@AddActivity).sendBroadcast(intent)
         }
 
             finish()

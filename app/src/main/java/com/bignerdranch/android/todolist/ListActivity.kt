@@ -1,9 +1,16 @@
 package com.bignerdranch.android.todolist
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +25,12 @@ class ListActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
     private lateinit var fab: FloatingActionButton
+
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            LoadTasksAsync().execute()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
@@ -29,7 +42,10 @@ class ListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = taskAdapter
 
-        LoadTasksAsync().execute()
+        // Наблюдайте за LiveData и обновляйте адаптер при изменениях
+        App.database.taskDao().getAllTasks().observe(this, { tasks ->
+            taskAdapter.setTasks(tasks)
+        })
 
         fab.setOnClickListener {
             // Открываем AddActivity при нажатии на кнопку
@@ -56,17 +72,27 @@ class ListActivity : AppCompatActivity() {
         })
 
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter("task_added"))
+    }
 
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
     }
 
     // AsyncTask для загрузки задач из базы данных
     private inner class LoadTasksAsync : AsyncTask<Void, Void, List<Task>>() {
         override fun doInBackground(vararg params: Void?): List<Task> {
-            return App.database.taskDao().getAllTasks()
+            return App.database.taskDao().getAllTasks().value ?: emptyList()
         }
 
         override fun onPostExecute(result: List<Task>) {
             super.onPostExecute(result)
+
+            // Обновите адаптер с полученными данными
             taskAdapter.setTasks(result)
         }
     }
